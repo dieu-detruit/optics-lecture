@@ -1,0 +1,3 @@
+[submodule "external/optics"]
+	path = external/optics
+	url = https://github.com/dieu-detruit/optics-lib.git
