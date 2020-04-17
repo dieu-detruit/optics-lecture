@@ -10,27 +10,32 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(OPTICS_LECTURE LANGUAGES C CXX)
 
+# build optics lib as subdirectory (name: optics)
+add_subdirectory(external/optics)
+set(optics_INCLUDE_DIRS
+    external/optics/include)
+
+
 # find packages
 find_package(Eigen3 REQUIRED)
 
 set(COMMON_INCLUDE_DIRS
     ${EIGEN3_INCLUDE_DIRS}
+    external/optics/include
     )
-
-# build graphic as subdirectory (name: optics)
-add_subdirectory(external/optics)
-set(optics_INCLUDE_DIRS
-    external/optics/include)
+set(COMMON_LINK_LIBRARIES
+    optics
+    )
 
 ### set executables
 function(set_executable dirname)
     file(GLOB TEST_SOURCES ${dirname}/*.cpp)
-    foreach(TEST_SOURCE ${${MAKE_TARGET}_TEST_SOURCES})
+    foreach(TEST_SOURCE ${TEST_SOURCES})
         get_filename_component(TEST_NAME ${TEST_SOURCE} NAME_WE)
 
         add_executable(${TEST_NAME} ${TEST_SOURCE})
-        target_include_directories(${TARGET_PREFIX}${TEST_NAME} PRIVATE ${COMMON_INCLUDE_DIRS} modules_${MAKE_TARGET_LOWER})
-        target_link_libraries(${TARGET_PREFIX}${TEST_NAME} ${${MAKE_TARGET}_LINK_LIBRARIES})
+        target_include_directories(${TEST_NAME} PRIVATE ${COMMON_INCLUDE_DIRS})
+        target_link_libraries(${TEST_NAME} ${COMMON_LINK_LIBRARIES})
     endforeach()
 endfunction()
 
