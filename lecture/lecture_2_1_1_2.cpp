@@ -16,7 +16,7 @@ int main()
         .dir = Vector3d{0.0, 0.0, 1.0},
         .I = 0.0_W / 1.0_m2};
 
-    ray.dir = AngleAxis(1.0_mrad, Vector3d::UnitX()).toRotationMatrix() * ray.dir;
+    ray.dir = AngleAxis(double(1.0_mrad), Vector3d::UnitX()).toRotationMatrix() * ray.dir;
 
     std::cout << ray.dir << std::endl;
 

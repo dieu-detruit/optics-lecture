@@ -15,13 +15,13 @@ add_subdirectory(external/optics)
 set(optics_INCLUDE_DIRS
     external/optics/include)
 
-
-# find packages
+# find packages and include files
 find_package(Eigen3 REQUIRED)
+include(external/optics/libopt.cmake)
 
 set(COMMON_INCLUDE_DIRS
     ${EIGEN3_INCLUDE_DIRS}
-    external/optics/include
+    ${LIBOPT_INCLUDE_DIRS}
     )
 set(COMMON_LINK_LIBRARIES
     optics

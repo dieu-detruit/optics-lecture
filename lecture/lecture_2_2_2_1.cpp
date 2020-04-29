@@ -16,8 +16,8 @@ int main()
     constexpr int division_r = 50;
 
     Optics::Geometry::Ray<Irradiance> flux[division_v * division_r];
-    const Vector3d origin = Vector3d::Zero();
-    const Angle range = 1.0_rad;
+    Vector3d origin = Vector3d::Zero();
+    constexpr Angle range = 1.0_rad;
 
     double versin_range = (1.0 - std::cos(range)) / (1.0 - 0.5 / division_v);
     auto vertical_angle = [c = versin_range](double x) -> Angle {
@@ -29,13 +29,13 @@ int main()
 
     for (int i = 0; i < division_v; ++i) {
         Angle vth = vertical_angle((double)i / division_v) * 1.0_rad;
-        Vector3d ray = AngleAxis(vth, v_axis).toRotationMatrix() * Vector3d{0.0, 0.0, 1.0};
+        Vector3d ray = AngleAxis(double(1.0_rad), v_axis).toRotationMatrix() * Vector3d{0.0, 0.0, 1.0};
 
         for (int j = 0; j < division_r; ++j) {
             Angle rth = 2 * M_PI * j / division_r * 1.0_rad;
             flux[division_v * i + j] = {
                 .source = origin,
-                .dir = AngleAxis(rth, r_axis).toRotationMatrix() * ray,
+                .dir = AngleAxis(double(rth), r_axis).toRotationMatrix() * ray,
                 .I = 0.0_W / 1.0_m2};
         }
     }
